@@ -362,6 +362,33 @@ body {
     transform: none;
   }
 
+  .place-hotspot::before {
+    background-image:
+      linear-gradient(
+        90deg,
+        rgb(246 241 231 / 0.96) 0%,
+        rgb(246 241 231 / 0.88) 48%,
+        rgb(246 241 231 / 0.55) 100%
+      ),
+      url("/garden/courtyard-base.webp");
+    background-position: center, center center;
+    background-repeat: no-repeat;
+    background-size: cover, 235% auto;
+    filter: saturate(0.82);
+  }
+
+  .place-hotspot--cottage::before {
+    background-position: center, left center;
+  }
+
+  .place-hotspot--stream::before {
+    background-position: center, center center;
+  }
+
+  .place-hotspot--greenhouse::before {
+    background-position: center, right center;
+  }
+
   .place-hotspot--stream:hover,
   .place-hotspot:hover {
     transform: translateY(-3px);

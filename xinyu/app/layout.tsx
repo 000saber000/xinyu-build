@@ -28,6 +28,15 @@ export default function RootLayout({
       lang="zh-CN"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <link
+          rel="preload"
+          href="/garden/courtyard-base.webp"
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <AppShell>{children}</AppShell>
       </body>

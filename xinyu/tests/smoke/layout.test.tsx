@@ -23,3 +23,15 @@ it("declares Simplified Chinese as the document language", () => {
 
   expect(markup).toContain('<html lang="zh-CN"');
 });
+
+it("preloads the courtyard base image", () => {
+  const markup = renderToStaticMarkup(
+    <RootLayout>
+      <div />
+    </RootLayout>,
+  );
+
+  expect(markup).toContain(
+    '<link rel="preload" href="/garden/courtyard-base.webp" as="image" type="image/webp"',
+  );
+});
