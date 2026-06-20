@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ivory: #f6f1e7;
+  --sage: #8ea58c;
+  --lavender: #b9afce;
+  --moss: #566b57;
+  --sun: #e8c98d;
+  --ink: #26352a;
+  --glass: rgb(246 241 231 / 0.68);
+  --focus: #3f6347;
+  --background: var(--ivory);
+  --foreground: var(--ink);
 }
 
 @theme inline {
@@ -12,15 +20,80 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: 16px;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.glass-panel {
+  border: 1px solid rgb(255 255 255 / 0.55);
+  background: var(--glass);
+  box-shadow: 0 0.75rem 2rem rgb(38 53 42 / 0.12);
+  backdrop-filter: blur(1rem);
+}
+
+.topbar {
+  position: fixed;
+  z-index: 10;
+  top: 1rem;
+  right: 1rem;
+  left: 1rem;
+}
+
+.topbar-surface {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 72rem;
+  min-height: 4rem;
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+  border-radius: 1.5rem;
+}
+
+.topbar nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 3vw, 2rem);
+}
+
+.topbar a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand {
+  color: var(--moss);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.shell-main {
+  padding-top: 6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
