@@ -8,9 +8,18 @@ it("provides the primary navigation and main content", () => {
     </AppShell>,
   );
 
-  expect(screen.getByRole("link", { name: "漫游" })).toBeVisible();
-  expect(screen.getByRole("link", { name: "心情日记" })).toBeVisible();
-  expect(screen.getByRole("link", { name: "小游戏" })).toBeVisible();
-  expect(screen.getByRole("link", { name: "设置" })).toBeVisible();
+  const roamLink = screen.getByRole("link", { name: "漫游" });
+  const diaryLink = screen.getByRole("link", { name: "心情日记" });
+  const gamesLink = screen.getByRole("link", { name: "小游戏" });
+  const settingsLink = screen.getByRole("link", { name: "设置" });
+
+  expect(roamLink).toBeVisible();
+  expect(roamLink).toHaveAttribute("href", "/");
+  expect(diaryLink).toBeVisible();
+  expect(diaryLink).toHaveAttribute("href", "/diary");
+  expect(gamesLink).toBeVisible();
+  expect(gamesLink).toHaveAttribute("href", "/games");
+  expect(settingsLink).toBeVisible();
+  expect(settingsLink).toHaveAttribute("href", "/settings");
   expect(screen.getByRole("main")).toHaveTextContent("内容");
 });
