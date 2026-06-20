@@ -273,8 +273,6 @@ git commit -m "feat: add Xinyu visual tokens and app shell"
 **Files:**
 - Create: `xinyu/components/garden/courtyard.tsx`
 - Create: `xinyu/public/garden/courtyard-base.webp`
-- Create: `xinyu/public/garden/courtyard-foreground.webp`
-- Create: `xinyu/public/garden/mist.webp`
 - Modify: `xinyu/app/page.tsx`
 - Modify: `xinyu/app/globals.css`
 - Test: `xinyu/tests/garden/courtyard.test.tsx`
@@ -298,13 +296,13 @@ Run: `npm test -- tests/garden/courtyard.test.tsx`
 
 Expected: FAIL because `Courtyard` does not exist.
 
-- [ ] **Step 2: Generate and optimize the three approved visual layers**
+- [ ] **Step 2: Optimize the approved base visual**
 
-Use the confirmed UI concept as the visual reference. Generate one 16:9 courtyard base without text or UI, one transparent/isolated foreground foliage layer, and one subtle mist layer. Save final optimized WebP files at the exact paths above. Verify the combined image keeps the cottage left, stream center, and conservatory right so hotspots remain stable.
+Use the approved 16:9 courtyard source without text or UI and optimize it to one production WebP. Build mist, foreground, vignette, and light as CSS-only decorative layers so the production bundle does not carry redundant raster overlays. Verify the image keeps the cottage left, stream center, and conservatory right so hotspots remain stable.
 
-Run: `Get-Item public/garden/*.webp | Select-Object Name,Length`
+Run: `Get-Item public/garden/courtyard-base.webp | Select-Object Name,Length`
 
-Expected: three files exist; each is below 1.5 MB, and the total is below 3 MB.
+Expected: the optimized WebP exists and is below 1.5 MB.
 
 - [ ] **Step 3: Implement semantic hotspots over decorative layers**
 
