@@ -1,4 +1,4 @@
-﻿import type { ChatMessage, ChatRole } from "./chat-types";
+﻿import type { ChatMessage } from "./chat-types";
 
 export type ChatState = {
   messages: ChatMessage[];
@@ -57,3 +57,5 @@ export function createChatController(state: ChatState) {
     },
   };
 }
+
+

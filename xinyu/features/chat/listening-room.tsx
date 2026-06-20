@@ -1,7 +1,6 @@
 ﻿"use client";
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import { companions, type CompanionId } from "@/features/companions/catalog";
-import type { ChatMessage } from "@/features/chat/chat-types";
 import { createChatController, type ChatState } from "@/features/chat/chat-controller";
 
 const emptyState: ChatState = { messages: [], streamingText: "", error: null };
@@ -35,7 +34,6 @@ export function ListeningRoom() {
     setIsStreaming(true);
 
     try {
-      // Placeholder: actual API call will come via /api/chat proxy
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
