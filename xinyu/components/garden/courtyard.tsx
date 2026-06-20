@@ -1,4 +1,10 @@
+﻿"use client";
+import { useState } from "react";
 import Link from "next/link";
+import { MoodCheckIn } from "./mood-check-in";
+import { CompanionPicker } from "./companion-picker";
+import { moodRepository } from "@/lib/repositories";
+import type { CompanionId } from "@/features/companions/catalog";
 
 const places = [
   {
@@ -22,6 +28,11 @@ const places = [
 ] as const;
 
 export function Courtyard() {
+  const [companionId, setCompanionId] = useState<CompanionId | "custom">("fox");
+  const [showCompanionPicker, setShowCompanionPicker] = useState(false);
+
+  const today = new Date().toISOString().slice(0, 10);
+
   return (
     <section className="courtyard" aria-label="心屿庭院">
       <div className="courtyard-base" aria-hidden="true" />
@@ -49,9 +60,32 @@ export function Courtyard() {
             </Link>
           ))}
         </div>
+
+        <div className="courtyard-mood-section">
+          <MoodCheckIn
+            date={today}
+            onSave={async (entry) => {
+              await moodRepository.save(entry);
+              setShowCompanionPicker(true);
+            }}
+          />
+        </div>
+
+        {showCompanionPicker && (
+          <div className="courtyard-companion-section">
+            <CompanionPicker
+              value={companionId}
+              onChange={(id) => {
+                setCompanionId(id);
+                localStorage.setItem("xinyu.companion", id);
+              }}
+            />
+          </div>
+        )}
       </div>
 
       <div className="courtyard-foreground" aria-hidden="true" />
     </section>
   );
 }
+
