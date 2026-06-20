@@ -217,7 +217,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 const links = [
-  ["漫游", "/"], ["心情日记", "/diary"], ["小游戏", "/games/breathe"], ["设置", "/settings"],
+  ["漫游", "/"], ["心情日记", "/diary"], ["小游戏", "/games"], ["设置", "/settings"],
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
