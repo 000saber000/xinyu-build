@@ -1,5 +1,6 @@
-﻿'use client';
+﻿"use client";
 import { ApiConfigForm } from "@/features/settings/api-config-form";
+import { PrivacyControls } from "@/features/settings/privacy-controls";
 import type { ApiConfig } from "@/lib/schemas";
 
 export default function SettingsPage() {
@@ -9,13 +10,14 @@ export default function SettingsPage() {
       <section aria-labelledby="api-heading">
         <h2 id="api-heading">API 配置</h2>
         <ApiConfigForm
-          onTest={async (config: ApiConfig) => {
-            // Placeholder: will validate via proxy in future task
-            console.log("Testing API config:", config);
+          onTest={async (_config: ApiConfig) => {
+            console.log("Testing API config...");
           }}
         />
+      </section>
+      <section>
+        <PrivacyControls />
       </section>
     </main>
   );
 }
-
