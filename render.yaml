@@ -1,0 +1,13 @@
+﻿services:
+  - type: web
+    name: xinyu
+    env: node
+    plan: free
+    rootDir: xinyu
+    buildCommand: npm install && npm run build
+    startCommand: npm run start -- -p $PORT
+    envVars:
+      - key: NODE_VERSION
+        value: 22.16.0
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=512
