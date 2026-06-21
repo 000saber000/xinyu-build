@@ -1,7 +1,7 @@
 ﻿import { z } from "zod";
 import { NextRequest } from "next/server";
 import { deepSeekModelSchema } from "@/lib/schemas";
-import { apiConfigSchema } from "@/lib/schemas";
+import { } from "@/lib/schemas";
 
 const DEEPSEEK_ENDPOINT = "https://api.deepseek.com/chat/completions";
 
@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ message: "无法连接到 DeepSeek 服务" }, { status: 502 });
   }
 }
+
 
 
 
