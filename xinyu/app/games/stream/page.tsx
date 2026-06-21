@@ -23,7 +23,7 @@ export default function StreamPage() {
       style={sceneStyle(SCENE_IMAGES.stream)}
     >
       <div className="experience-panel game-control-panel">
-        <p className="experience-eyebrow">不必解释，只需要轻轻放下</p>
+        <p className="experience-eyebrow">🍂 不必解释，只需要轻轻放下 💧</p>
         <h1>心绪溪流</h1>
         {!result ? (
           <div className="form-stack">

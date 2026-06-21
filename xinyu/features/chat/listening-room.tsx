@@ -123,7 +123,7 @@ export function ListeningRoom() {
       style={sceneStyle(SCENE_IMAGES.chat)}
     >
       <div className="experience-panel listening-room-panel">
-      <p className="experience-eyebrow">一盏灯，一把椅子，一段只属于你的时间</p>
+      <p className="experience-eyebrow">🛋️💡 🛋️💡 一盏灯，一把椅子，一段只属于你的时间 ✨ ✨</p>
       <h1>倾听小屋</h1>`r`n      <label htmlFor="chat-model">对话模型</label>`r`n      <select id="chat-model" value={model} onChange={(e) => setModel(deepSeekModelSchema.parse(e.target.value))}>`r`n        <option value="deepseek-v4-flash">V4 Flash（快速）</option>`r`n        <option value="deepseek-v4-pro">V4 Pro（强大）</option>`r`n      </select>
       <div className="listening-room-messages">
         {state.messages.map((msg) => (
@@ -158,4 +158,5 @@ export function ListeningRoom() {
     </section>
   );
 }
+
 
