@@ -2,6 +2,8 @@
 import { useCallback, useState } from "react";
 import { companions, type CompanionId } from "@/features/companions/catalog";
 import { createChatController, type ChatState } from "@/features/chat/chat-controller";
+import { SCENE_IMAGES, sceneStyle } from "@/lib/visual-assets";
+import { loadApiConfig } from "@/lib/api-config-store";
 
 const emptyState: ChatState = { messages: [], streamingText: "", error: null };
 
@@ -27,6 +29,11 @@ export function ListeningRoom() {
   async function handleSend() {
     if (!input.trim() || isStreaming) return;
     const text = input.trim();
+    const apiConfig = loadApiConfig();
+    if (!apiConfig) {
+      setState(ctrl().setError("请先前往设置，填写并测试你的 API 配置。"));
+      return;
+    }
     setInput("");
 
     let next = ctrl().sendMessage(text);
@@ -38,6 +45,9 @@ export function ListeningRoom() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          baseUrl: apiConfig.baseUrl,
+          apiKey: apiConfig.apiKey,
+          model: apiConfig.model,
           messages: [
             { role: "system", content: buildSystemPrompt(companionId) },
             ...next.messages.map((m) => ({ role: m.role, content: m.content })),
@@ -102,7 +112,15 @@ export function ListeningRoom() {
   }
 
   return (
-    <section aria-label="倾听小屋" role="region">
+    <section
+      aria-label="倾听小屋"
+      className="experience-page experience-page--chat"
+      data-scene={SCENE_IMAGES.chat}
+      role="region"
+      style={sceneStyle(SCENE_IMAGES.chat)}
+    >
+      <div className="experience-panel listening-room-panel">
+      <p className="experience-eyebrow">一盏灯，一把椅子，一段只属于你的时间</p>
       <h1>倾听小屋</h1>
       <div className="listening-room-messages">
         {state.messages.map((msg) => (
@@ -133,6 +151,7 @@ export function ListeningRoom() {
         {isStreaming && <button type="button" onClick={handleAbort}>停止</button>}
         <button type="button" onClick={handleNewConversation}>新对话</button>
       </form>
+      </div>
     </section>
   );
 }

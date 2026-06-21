@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import Home from "@/app/page";
 import { AppShell } from "@/components/app-shell";
 import { GlassPanel } from "@/components/glass-panel";
@@ -15,13 +15,14 @@ it("provides the primary navigation and main content", () => {
   const gamesLink = screen.getByRole("link", { name: "小游戏" });
   const settingsLink = screen.getByRole("link", { name: "设置" });
 
-  expect(screen.getByRole("link", { name: "心屿" })).toHaveAttribute(
-    "href",
-    "/",
-  );
+  expect(screen.getAllByRole("link", { name: "心屿" })).toHaveLength(2);
+  expect(screen.getAllByRole("link", { name: "心屿" })[0]).toHaveAttribute("href", "/");
   expect(
     screen.getByRole("navigation", { name: "主导航" }),
   ).toBeVisible();
+  expect(
+    within(screen.getByRole("navigation", { name: "主导航" })).getByRole("link", { name: "心屿" }),
+  ).toHaveAttribute("href", "/");
   expect(roamLink).toBeVisible();
   expect(roamLink).toHaveAttribute("href", "/");
   expect(diaryLink).toBeVisible();
@@ -30,6 +31,7 @@ it("provides the primary navigation and main content", () => {
   expect(gamesLink).toHaveAttribute("href", "/games");
   expect(settingsLink).toBeVisible();
   expect(settingsLink).toHaveAttribute("href", "/settings");
+  expect(settingsLink).toHaveClass("settings-link");
   expect(screen.getByRole("main")).toHaveTextContent("内容");
 });
 

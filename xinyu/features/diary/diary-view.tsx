@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { MoodEntry, DiaryEntry } from "@/lib/schemas";
 import { moodRepository, diaryRepository } from "@/lib/repositories";
 import { serializeExport, parseImport } from "@/lib/export-data";
+import { SCENE_IMAGES, sceneStyle } from "@/lib/visual-assets";
 
 interface DiaryProps {
   moods: MoodEntry[];
@@ -79,9 +80,16 @@ export function DiaryView({ moods: initialMoods, diary: initialDiary }: DiaryPro
   }, {});
 
   return (
-    <section aria-label="心情日记">
+    <section
+      aria-label="心情日记"
+      className="experience-page experience-page--diary"
+      data-scene={SCENE_IMAGES.diary}
+      style={sceneStyle(SCENE_IMAGES.diary)}
+    >
+      <div className="experience-panel diary-panel">
+      <p className="experience-eyebrow">写给此刻的自己，只有你能看见</p>
       <h1>心情日记</h1>
-      <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} style={{ marginBottom: "1.5rem" }}>
+      <form className="form-stack" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
         <label>标题<input value={title} onChange={(e) => setTitle(e.target.value)} required /></label>
         <label>内容<textarea value={body} onChange={(e) => setBody(e.target.value)} required rows={4} /></label>
         <label>心情
@@ -92,7 +100,7 @@ export function DiaryView({ moods: initialMoods, diary: initialDiary }: DiaryPro
         </label>
         <button type="submit">保存</button>
       </form>
-      <div style={{ marginBottom: "1rem" }}>
+      <div className="button-row diary-toolbar">
         <button onClick={() => setViewMode("list")} disabled={viewMode === "list"}>列表</button>
         <button onClick={() => setViewMode("trend")} disabled={viewMode === "trend"}>趋势</button>
         <button onClick={handleExport}>导出</button>
@@ -120,6 +128,7 @@ export function DiaryView({ moods: initialMoods, diary: initialDiary }: DiaryPro
           ))}
         </div>
       )}
+      </div>
     </section>
   );
 }

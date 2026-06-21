@@ -9,6 +9,10 @@ it("renders five preset companion radio inputs", () => {
   for (const name of names) {
     expect(screen.getByRole("radio", { name: new RegExp(name) })).toBeVisible();
   }
+  expect(screen.getAllByTestId("companion-art")).toHaveLength(5);
+  for (const artwork of screen.getAllByTestId("companion-art")) {
+    expect(artwork.getAttribute("style")).toContain("companion-sprite.webp");
+  }
 });
 
 it("marks the selected companion as checked", () => {

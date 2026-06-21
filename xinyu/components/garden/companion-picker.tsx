@@ -1,7 +1,9 @@
 ﻿"use client";
 import { useState } from "react";
+import Image from "next/image";
 import { companions, type CompanionId } from "@/features/companions/catalog";
 import { saveCustomAvatar } from "@/lib/avatar-store";
+import { COMPANION_SPRITE } from "@/lib/visual-assets";
 
 export function CompanionPicker({
   value,
@@ -13,10 +15,11 @@ export function CompanionPicker({
   const [preview, setPreview] = useState<string | null>(null);
 
   return (
-    <fieldset>
-      <legend>选择你的陪伴者</legend>
+    <fieldset className="companion-picker">
+      <legend>我的陪伴者</legend>
+      <div className="companion-picker__grid">
       {companions.map((companion) => (
-        <label key={companion.id}>
+        <label className="companion-option" key={companion.id}>
           <input
             type="radio"
             name="companion"
@@ -24,10 +27,21 @@ export function CompanionPicker({
             checked={value === companion.id}
             onChange={() => onChange(companion.id)}
           />
-          {companion.name}（{companion.kind}）— {companion.tone}
+          <span
+            aria-hidden="true"
+            className="companion-option__art"
+            data-testid="companion-art"
+            style={{
+              backgroundImage: `url("${COMPANION_SPRITE}")`,
+              backgroundPosition: companion.spritePosition,
+            }}
+          />
+          <strong>{companion.name}</strong>
+          <small>{companion.kind}</small>
         </label>
       ))}
-      <label>
+      </div>
+      <label className="companion-upload">
         <input
           type="file"
           accept=".jpg,.jpeg,.png,.webp"
@@ -43,9 +57,9 @@ export function CompanionPicker({
             }
           }}
         />
-        自定义头像
+        <span>＋ 自定义头像</span>
       </label>
-      {preview && <img src={preview} alt="自定义头像预览" />}
+      {preview && <Image src={preview} alt="自定义头像预览" width={96} height={96} unoptimized />}
     </fieldset>
   );
 }

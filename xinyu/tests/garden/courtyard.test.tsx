@@ -19,10 +19,18 @@ it("presents the courtyard and every destination", () => {
   ] as const;
 
   for (const place of places) {
-    expect(screen.getByRole("link", { name: new RegExp(place.title) })).toHaveAttribute(
+    const link = screen.getByRole("link", { name: new RegExp(place.title) });
+    expect(link).toHaveAttribute(
       "href",
       place.href,
     );
+    expect(link.querySelector("[data-place-icon]")).toBeInTheDocument();
     expect(screen.getByText(place.detail, { exact: true })).toBeVisible();
   }
+});
+
+it("shows the companion artwork panel without requiring a mood check-in first", () => {
+  render(<Courtyard />);
+  expect(screen.getByRole("group", { name: "我的陪伴者" })).toBeVisible();
+  expect(screen.getAllByTestId("companion-art")).toHaveLength(5);
 });

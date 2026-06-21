@@ -29,7 +29,7 @@ const places = [
 
 export function Courtyard() {
   const [companionId, setCompanionId] = useState<CompanionId | "custom">("fox");
-  const [showCompanionPicker, setShowCompanionPicker] = useState(false);
+  const [showCompanionPicker, setShowCompanionPicker] = useState(true);
 
   const today = new Date().toISOString().slice(0, 10);
 
@@ -41,8 +41,8 @@ export function Courtyard() {
 
       <div className="courtyard-content">
         <header className="courtyard-heading">
-          <p>循着晨光，慢慢靠近此刻的自己</p>
           <h1>今天，想去哪里走走？</h1>
+          <span className="courtyard-title-ornament" aria-hidden="true">— ❧ —</span>
         </header>
 
         <div className="courtyard-places">
@@ -52,10 +52,15 @@ export function Courtyard() {
               href={place.href}
               key={place.id}
             >
+              <span className="place-hotspot__icon" data-place-icon aria-hidden="true">
+                {place.id === "cottage" ? "▱" : place.id === "stream" ? "◉" : "❧"}
+              </span>
+              <span className="place-hotspot__copy">
               <strong>{place.title}</strong>
               <span>{place.detail}</span>
+              </span>
               <span className="place-hotspot__action" aria-hidden="true">
-                走近看看 <span>→</span>
+                <span>›</span>
               </span>
             </Link>
           ))}

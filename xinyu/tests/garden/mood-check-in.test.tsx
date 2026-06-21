@@ -1,7 +1,6 @@
 ﻿import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MoodCheckIn } from "@/components/garden/mood-check-in";
-import type { MoodEntry } from "@/lib/schemas";
 import { vi } from "vitest";
 
 it("renders all five mood options", () => {
