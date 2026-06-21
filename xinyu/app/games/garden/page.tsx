@@ -17,7 +17,7 @@ export default function GardenPage() {
       style={sceneStyle(SCENE_IMAGES.garden)}
     >
       <div className="experience-panel game-control-panel">
-        <p className="experience-eyebrow">🌱 照顾一株植物，也照顾今天的自己 🪴</p>
+        <p className="experience-eyebrow">🌱 (｡･ω･｡)ﾉ♡ 照顾一株植物，也照顾今天的自己 🪴</p>
         <h1>花房养成</h1>
         <div className="garden-stats"><span>晨露 <strong>{state.dew}</strong></span><span>生长阶段 <strong>{growthLabels[Math.min(state.growth, growthLabels.length - 1)]}</strong></span></div>
         <button onClick={() => setState((s) => rewardActivity(s, activityId))} disabled={watered}>{watered ? "今日已浇灌" : "用晨露浇灌"}</button>

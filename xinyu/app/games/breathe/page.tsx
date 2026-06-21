@@ -22,7 +22,7 @@ export default function BreathePage() {
       style={sceneStyle(SCENE_IMAGES.breathe)}
     >
       <div className="experience-panel game-control-panel">
-        <p className="experience-eyebrow">🌸 让呼吸像花瓣一样，缓缓打开 🌬️</p>
+        <p className="experience-eyebrow">🌸 (◡ ω ◡) 让呼吸像花瓣一样，缓缓打开 🌬️</p>
         <h1>呼吸花开</h1>
         <div className={`breathing-orb breathing-orb--${state.phase}`} aria-hidden="true" />
         <p className="breathing-phase">{phaseLabels[state.phase]}</p>

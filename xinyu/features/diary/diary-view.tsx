@@ -87,7 +87,7 @@ export function DiaryView({ moods: initialMoods, diary: initialDiary }: DiaryPro
       style={sceneStyle(SCENE_IMAGES.diary)}
     >
       <div className="experience-panel diary-panel">
-      <p className="experience-eyebrow">📖 📖 写给此刻的自己，只有你能看见 🔒 🔒</p>
+      <p className="experience-eyebrow">📖 📖 (｡•́︿•̀｡) 写给此刻的自己，只有你能看见 🔒 🔒</p>
       <h1>心情日记</h1>
       <form className="form-stack" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
         <label>标题<input value={title} onChange={(e) => setTitle(e.target.value)} required /></label>

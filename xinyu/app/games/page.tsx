@@ -16,7 +16,7 @@ export default function GamesPage() {
       style={sceneStyle(SCENE_IMAGES.garden)}
     >
       <div className="experience-panel games-hub-panel">
-        <p className="experience-eyebrow">⏳ 每次只需几分钟，不追赶，也不比较 🕊️</p>
+        <p className="experience-eyebrow">⏳ 每次只需几分钟，不追赶，也不比较 (=^･ω･^=) 🕊️</p>
         <h1>静心花房</h1>
         <div className="games-grid">
           {games.map(([title, detail, href, image]) => (
