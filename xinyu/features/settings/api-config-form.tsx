@@ -1,50 +1,40 @@
 ﻿"use client";
 import { useState } from "react";
-import { apiConfigSchema, type ApiConfig } from "@/lib/schemas";
+import { apiConfigSchema } from "@/lib/schemas";
 
 export function ApiConfigForm({
   onTest,
 }: {
-  onTest: (config: ApiConfig) => Promise<unknown>;
+  onTest: (apiKey: string) => Promise<unknown>;
 }) {
-  const [baseUrl, setBaseUrl] = useState("");
   const [apiKey, setApiKey] = useState("");
-  const [model, setModel] = useState("");
-  const [sessionOnly, setSessionOnly] = useState(true);
   const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    const result = apiConfigSchema.safeParse({ baseUrl, apiKey, model, persist: !sessionOnly });
+    const result = apiConfigSchema.safeParse({ apiKey });
     if (!result.success) {
-      setError(result.error.issues[0]?.message ?? "请检查输入");
+      setError("请输入有效的 API 密钥");
       return;
     }
     try {
-      await onTest(result.data);
+      await onTest(result.data.apiKey);
     } catch {
-      setError("连接测试失败，请检查配置");
+      setError("连接测试失败，请检查密钥");
     }
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        API 地址
-        <input type="url" value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} required />
-      </label>
-      <label>
-        API 密钥
-        <input type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} required />
-      </label>
-      <label>
-        模型名称
-        <input type="text" value={model} onChange={(e) => setModel(e.target.value)} required />
-      </label>
-      <label>
-        <input type="checkbox" checked={sessionOnly} onChange={(e) => setSessionOnly(e.target.checked)} />
-        仅本次会话使用
+        DeepSeek API 密钥
+        <input
+          type="password"
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+          required
+        />
       </label>
       {error && <p role="alert">{error}</p>}
       <button type="submit">测试连接</button>

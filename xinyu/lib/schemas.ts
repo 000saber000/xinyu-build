@@ -16,16 +16,12 @@ export const diaryEntrySchema = z.object({
   mood: z.enum(moodValues).optional(),
 });
 
-export const apiConfigSchema = z.object({
-  baseUrl: z.string().url().refine(
-    (url) => new URL(url).protocol === "https:",
-    "仅支持 HTTPS"
-  ),
-  apiKey: z.string().min(1),
-  model: z.string().min(1).max(120),
-  persist: z.boolean(),
-});
+export const apiConfigSchema = z.object({ apiKey: z.string().trim().min(1) }).strict();
+export type ApiConfig = z.infer<typeof apiConfigSchema>;
+
+export const deepSeekModels = ["deepseek-v4-flash", "deepseek-v4-pro"] as const;
+export const deepSeekModelSchema = z.enum(deepSeekModels);
+export type DeepSeekModel = z.infer<typeof deepSeekModelSchema>;
 
 export type MoodEntry = z.infer<typeof moodEntrySchema>;
 export type DiaryEntry = z.infer<typeof diaryEntrySchema>;
-export type ApiConfig = z.infer<typeof apiConfigSchema>;

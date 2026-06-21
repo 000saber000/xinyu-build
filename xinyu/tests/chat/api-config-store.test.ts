@@ -1,29 +1,34 @@
-import { clearApiConfig, loadApiConfig, saveApiConfig } from "@/lib/api-config-store";
+﻿import { saveApiConfig, loadApiConfig, clearApiConfig } from "@/lib/api-config-store";
 
-const config = {
-  baseUrl: "https://api.openai.com/v1",
-  apiKey: "sk-test",
-  model: "gpt-test",
-  persist: false,
-};
+const config = { apiKey: "sk-test" };
 
 beforeEach(() => {
-  localStorage.clear();
   sessionStorage.clear();
+  localStorage.clear();
 });
 
-it("keeps session-only configuration out of local storage", () => {
+it("stores only the DeepSeek key for the current session", () => {
   saveApiConfig(config);
-  expect(sessionStorage.getItem("xinyu.api-config")).toContain("sk-test");
-  expect(localStorage.getItem("xinyu.api-config")).toBeNull();
   expect(loadApiConfig()).toEqual(config);
+  expect(localStorage.getItem("xinyu.api-config")).toBeNull();
 });
 
-it("persists configuration only after explicit opt-in", () => {
-  saveApiConfig({ ...config, persist: true });
-  expect(localStorage.getItem("xinyu.api-config")).toContain("sk-test");
-  expect(loadApiConfig()).toEqual({ ...config, persist: true });
-  clearApiConfig();
+it("removes obsolete generic configuration", () => {
+  sessionStorage.setItem(
+    "xinyu.api-config",
+    JSON.stringify({
+      baseUrl: "https://api.openai.com/v1",
+      apiKey: "sk-old",
+      model: "gpt-test",
+      persist: false,
+    }),
+  );
   expect(loadApiConfig()).toBeNull();
 });
 
+it("clears the key from both storages", () => {
+  saveApiConfig(config);
+  clearApiConfig();
+  expect(loadApiConfig()).toBeNull();
+  expect(sessionStorage.getItem("xinyu.api-config")).toBeNull();
+});

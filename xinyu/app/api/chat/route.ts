@@ -1,55 +1,69 @@
-import { z } from "zod";
-import { allowedApiHosts, validateApiDestination } from "@/lib/proxy-policy";
+﻿import { z } from "zod";
+import { NextRequest } from "next/server";
+import { deepSeekModelSchema } from "@/lib/schemas";
+import { apiConfigSchema } from "@/lib/schemas";
 
-const requestSchema = z.object({
-  baseUrl: z.string().url(),
-  apiKey: z.string().min(1),
-  model: z.string().min(1).max(120),
-  messages: z.array(z.object({
-    role: z.enum(["system", "user", "assistant"]),
-    content: z.string().max(20_000),
-  })).min(1).max(100),
-});
+const DEEPSEEK_ENDPOINT = "https://api.deepseek.com/chat/completions";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  let body: unknown;
   try {
-    const input = requestSchema.parse(await request.json());
-    const base = await validateApiDestination(input.baseUrl, allowedApiHosts());
-    const root = base.href.endsWith("/") ? base.href : `${base.href}/`;
-    const target = new URL("chat/completions", root);
-    const upstream = await fetch(target, {
+    body = await request.json();
+  } catch {
+    return Response.json({ message: "请求格式错误" }, { status: 400 });
+  }
+
+  const parsed = z
+    .object({
+      apiKey: z.string().min(1),
+      model: deepSeekModelSchema,
+      messages: z.array(z.object({ role: z.string(), content: z.string() })),
+    })
+    .safeParse(body);
+
+  if (!parsed.success) {
+    return Response.json({ message: "请提供有效的 API 密钥和模型" }, { status: 400 });
+  }
+
+  const { apiKey, model, messages } = parsed.data;
+
+  try {
+    const upstream = await fetch(DEEPSEEK_ENDPOINT, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({ model, messages, stream: true }),
       redirect: "manual",
       cache: "no-store",
-      signal: AbortSignal.timeout(60_000),
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${input.apiKey}`,
-      },
-      body: JSON.stringify({
-        model: input.model,
-        messages: input.messages,
-        stream: true,
-      }),
     });
 
-    if (upstream.status >= 300 && upstream.status < 400) {
-      return Response.json({ message: "模型服务返回了不安全的重定向" }, { status: 502 });
+    if (!upstream.ok) {
+      const errBody = await upstream.json().catch(() => ({}));
+      const upstreamMsg = (errBody as { error?: { message?: string } }).error?.message;
+
+      let message: string;
+      if (upstream.status === 401) message = "密钥无效或没有权限";
+      else if (upstream.status === 402) message = "账户余额不足";
+      else if (upstream.status === 429) message = "请求过于频繁，请稍后再试";
+      else if (upstream.status === 503) message = "DeepSeek 服务暂时不可用";
+      else message = upstreamMsg ?? `上游错误 (${upstream.status})`;
+
+      return Response.json({ message }, { status: upstream.status });
     }
-    if (!upstream.ok || !upstream.body) {
-      return Response.json({ message: "模型服务暂时无法完成请求" }, { status: 502 });
-    }
+
     return new Response(upstream.body, {
       headers: {
-        "content-type": upstream.headers.get("content-type") ?? "text/event-stream",
-        "cache-control": "no-store",
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
       },
     });
-  } catch (error) {
-    const message = error instanceof Error && /不允许|未在/.test(error.message)
-      ? error.message
-      : "API 配置无效或网络暂时不可用";
-    return Response.json({ message }, { status: 400 });
+  } catch {
+    return Response.json({ message: "无法连接到 DeepSeek 服务" }, { status: 502 });
   }
 }
+
+
 
